@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>
+  {{ data ? 'Editar Produto' : 'Novo Produto' }}
+</h2>
+
+<mat-dialog-content>
+  <section fxLayout="column">
+    <form [formGroup]="formulario" fxLayout="column">
+      <mat-form-field appearance="outline">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="nome">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Código</mat-label>
+        <input matInput formControlName="codigo">
+      </mat-form-field>
+      <section fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Quantidade em Estoque</mat-label>
+          <input matInput type="number" formControlName="quantidadeAtual">
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Quantidade Mínima</mat-label>
+          <input matInput type="number" formControlName="quantidadeMinima">
+        </mat-form-field>
+      </section>
+      <section fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Preço de Compra</mat-label>
+          <input matInput type="number" formControlName="precoCompra">
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Percentual de Lucro</mat-label>
+          <input matInput type="number" formControlName="percentualLucro">
+        </mat-form-field>
+      </section>
+    </form>
+  </section>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="salvar()" [disabled]="formulario.invalid">
+    Salvar
+  </button>
+</mat-dialog-actions>

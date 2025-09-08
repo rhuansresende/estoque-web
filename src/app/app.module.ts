@@ -5,6 +5,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
 import {MaterialModule} from "./material.module";
+import { environment } from "./environments/environment";
+import { HttpClientModule } from "@angular/common/http";
+import { ReactiveFormsModule } from "@angular/forms";
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -15,13 +19,20 @@ import {MaterialModule} from "./material.module";
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FlexLayoutModule
   ],
   providers: [
     {
       provide: LOCALE_ID,
       useValue: 'pt-BR'
     },
+    {
+      provide: 'ENVIRONMENT',
+      useValue: environment
+    }
   ],
   bootstrap: [
     AppComponent

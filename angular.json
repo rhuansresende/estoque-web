@@ -82,7 +82,7 @@
             },
             "development": {
               "buildTarget": "estoque-web:build:development",
-              "ssl": true
+              "ssl": false
             }
           }
         },
