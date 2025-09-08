@@ -1,0 +1,18 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+mat-sidenav-container {
+  height: 100vh; /* ocupa a tela toda */
+}
+
+mat-sidenav {
+  width: 220px; /* largura fixa do menu lateral */
+}
+
+.conteudo {
+  padding: 16px;  /* espaço interno no conteúdo */
+  min-height: calc(100vh - 64px); /* ajusta considerando a altura da toolbar */
+  box-sizing: border-box;
+}

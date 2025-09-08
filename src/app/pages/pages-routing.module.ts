@@ -1,6 +1,10 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {NotFoundComponent} from "./not-found/not-found.component";
+import { PaginaInicialComponent } from "./pagina-inicial/pagina-inicial.component";
+import { ProdutosComponent } from "./produtos/produtos.component";
+import { MovimentacoesComponent } from "./movimentacoes/movimentacoes.component";
+import { RelatoriosComponent } from "./relatorios/relatorios.component";
 
 const routes: Routes = [
   {
@@ -14,8 +18,31 @@ const routes: Routes = [
   },
   {
     path: 'pagina-inicial',
-    loadChildren: () => import('./pagina-inicial/pagina-inicial.module').then(m => m.PaginaInicialModule)
+    component: PaginaInicialComponent,
+    children: [
+      {
+        path: 'produtos',
+        component: ProdutosComponent
+      },
+      {
+        path: 'movimentacoes',
+        component: MovimentacoesComponent
+      },
+      {
+        path: 'relatorios',
+        component: RelatoriosComponent
+      },
+      {
+        path: '',
+        redirectTo: 'produtos',
+        pathMatch: 'full'
+      }
+    ]
   },
+  {
+    path: '**',
+    redirectTo: '404'
+  }
 ];
 
 @NgModule({
