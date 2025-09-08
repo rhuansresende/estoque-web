@@ -1,13 +1,27 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>EstoqueWeb</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <title>Estoque WEB</title>
+    <base href="/estoque">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+  </head>
+  <body>
+    <estoque-root></estoque-root>
+  </body>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    console.log(
+      "%c ESTOQUE-WEB %c Version: %c 1.0.0" + " %c",
+      "background:#105f94 ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff; font-size: 14px;",
+      "background:#565656 ; padding: 1px; color: #fff; font-size: 14px;",
+      "background:#ef6c00 ; padding: 1px; border-radius: 0px 3px 3px 0;  color: #fff; font-size: 14px;",
+      "background:transparent")
+  </script>
 </html>
