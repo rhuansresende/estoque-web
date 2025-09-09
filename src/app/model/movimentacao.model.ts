@@ -5,7 +5,7 @@ export interface MovimentacaoModel {
   produto: ProdutoModel;
   tipo: string;
   quantidade: number;
-  dataMovimentacao: string;
+  dataMovimentacao?: string;
   precoCompra?: number;
   justificativa?: string;
 }

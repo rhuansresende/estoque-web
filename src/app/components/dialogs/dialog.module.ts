@@ -5,11 +5,13 @@ import { MaterialModule } from "../../material.module";
 import { ReactiveFormsModule } from "@angular/forms";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { MovimentacaoFormDialogComponent } from "./movimentacao-form-dialog-component/movimentacao-form-dialog.component";
+import {CurrencyMaskDirective} from '../../directives/CurrencyMaskDirective';
 
 @NgModule({
   declarations: [
     ProdutoFormDialogComponent,
-    MovimentacaoFormDialogComponent
+    MovimentacaoFormDialogComponent,
+    CurrencyMaskDirective
   ],
   imports: [
     CommonModule,

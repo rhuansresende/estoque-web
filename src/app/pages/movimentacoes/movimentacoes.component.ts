@@ -55,13 +55,7 @@ export class MovimentacoesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const novaMovimentacao: MovimentacaoModel = {
-          ...result
-        };
-
-        this.service.salvarMovimentacao(novaMovimentacao).subscribe(
-          () => this.consultarMovimentacoes(),
-            err => console.log());
+        this.consultarMovimentacoes();
       }
     });
   }
@@ -76,13 +70,7 @@ export class MovimentacoesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const novaMovimentacao: MovimentacaoModel = {
-          ...result
-        };
-
-        this.service.editarMovimentacao(novaMovimentacao).subscribe(
-          () => this.consultarMovimentacoes(),
-          err => console.log());
+        this.consultarMovimentacoes();
       }
     });
   }

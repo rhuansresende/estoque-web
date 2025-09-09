@@ -4,6 +4,7 @@ import { ProdutoService } from "../../services/produto.service";
 import { ProdutoFormDialogComponent } from "../../components/dialogs/produto-form-dialog-component/produto-form-dialog.component";
 import { MatDialog } from '@angular/material/dialog';
 import { ProdutoModel } from '../../model/produto.model';
+import Swal, { SweetAlertIcon } from "sweetalert2";
 
 @Component({
   selector: 'app-produtos',
@@ -51,16 +52,7 @@ export class ProdutosComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-
-        const novoProduto: ProdutoModel = {
-          ...result,
-          situacao: produto?.situacao || "ATIVO"
-        };
-
-        this.service.salvarProduto(novoProduto).subscribe(
-          () => this.getProdutos(),
-            err => console.log(err)
-        );
+        this.getProdutos();
       }
     });
   }
@@ -75,21 +67,31 @@ export class ProdutosComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-
-        const novoProduto: ProdutoModel = {
-          ...result,
-          situacao: produto?.situacao || "ATIVO"
-        };
-
-        this.service.editarProduto(novoProduto).subscribe(
-          () => this.getProdutos(),
-          err => console.log(err)
-        );
+        this.getProdutos();
       }
     });
   }
 
   excluirProduto(produto: ProdutoModel) {
-    this.service.excluirProduto(produto.id!).subscribe(() => this.getProdutos(), err => console.log(err));
+    this.service.excluirProduto(produto.id!).subscribe(
+      () => this.getProdutos(),
+      (err) => this.showModal('Erro', err.error.message, 'error'));
+  }
+
+  showModal(title: string, text: string, icon: SweetAlertIcon) {
+    Swal.fire({
+      titleText: title,
+      text: text,
+      icon: icon,
+      draggable: true,
+      showCancelButton: false,
+      confirmButtonText: 'OK',
+      showCloseButton: true,
+      didOpen: () => {
+        if (Swal.isVisible()) {
+          Swal.hideLoading();
+        }
+      }
+    })
   }
 }

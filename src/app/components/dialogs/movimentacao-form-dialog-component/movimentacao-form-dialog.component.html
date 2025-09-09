@@ -12,6 +12,9 @@
             <mat-form-field appearance="outline">
               <mat-label>Produto</mat-label>
               <input matInput type="text" formControlName="produto" [matAutocomplete]="auto">
+              <mat-error *ngIf="formulario.get('produto')?.hasError('required')">
+                Campo obrigatório
+              </mat-error>
               <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProdutoMovimentacao">
                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                   {{ option.nome }}
@@ -25,14 +28,20 @@
                   {{ tipo }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="formulario.get('tipo')?.hasError('required')">
+                Campo obrigatório
+              </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Quantidade</mat-label>
               <input matInput type="number" formControlName="quantidade">
+              <mat-error *ngIf="formulario.get('quantidade')?.hasError('required')">
+                Campo obrigatório
+              </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" *ngIf="formulario.get('tipo')?.value === 'ENTRADA'">
               <mat-label>Preço de Compra</mat-label>
-              <input matInput type="number" formControlName="precoCompra">
+              <input matInput appCurrencyMask maxlength="15" formControlName="precoCompra">
             </mat-form-field>
             <mat-form-field appearance="outline" *ngIf="data">
               <mat-label>Justificativa</mat-label>

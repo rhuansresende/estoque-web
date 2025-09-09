@@ -5,6 +5,9 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {MovimentacaoModel} from "../../../model/movimentacao.model";
 import {catchError, debounceTime, distinctUntilChanged, Observable, of, switchMap} from "rxjs";
 import {ProdutoService} from "../../../services/produto.service";
+import { MovimentacaoService } from "../../../services/movimentacao.service";
+import { isNull } from "../../../util/objeto.util";
+import Swal, {SweetAlertIcon} from "sweetalert2";
 
 @Component({
   selector: 'app-movimentacao-form-dialog-component',
@@ -25,7 +28,8 @@ export class MovimentacaoFormDialogComponent implements OnInit {
     private _fb: FormBuilder,
     private _dialogRef: MatDialogRef<MovimentacaoFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: MovimentacaoModel | null,
-    private produtoService: ProdutoService
+    private produtoService: ProdutoService,
+    private movimentacaoService: MovimentacaoService
   ) {
     this.formulario = this._fb.group({
       id: this._fb.control(data?.id || ''),
@@ -74,11 +78,51 @@ export class MovimentacaoFormDialogComponent implements OnInit {
 
   salvar() {
     if (this.formulario.valid) {
-      this._dialogRef.close(this.formulario.value);
+      const novaMovimentacao: MovimentacaoModel = {
+        id: this.formulario.get('id')?.value,
+        produto: this.formulario.get('produto')!.value,
+        tipo: this.formulario.get('tipo')!.value,
+        quantidade: this.formulario.get('quantidade')!.value,
+        precoCompra: this.formulario.get('precoCompra')?.value,
+        justificativa: this.formulario.get('justificativa')?.value
+      };
+      if (this.data) {
+        this.movimentacaoService.editarMovimentacao(novaMovimentacao).subscribe(
+          (movimentacao) => this._dialogRef.close(movimentacao),
+          (err) => {
+            this.showModal('Erro', err.error.message, 'error');
+            console.log("Erro Salvar Movimentação: " + err.error);
+          });
+      } else {
+        this.movimentacaoService.salvarMovimentacao(novaMovimentacao).subscribe(
+          (movimentacao) => this._dialogRef.close(movimentacao),
+          (err) => {
+            this.showModal('Erro', err.error.message, 'error');
+            console.log("Erro Salvar Movimentação: " + err.error);
+          });
+      }
+
     }
   }
 
   cancelar() {
     this._dialogRef.close(null);
+  }
+
+  showModal(title: string, text: string, icon: SweetAlertIcon) {
+    Swal.fire({
+      titleText: title,
+      text: text,
+      icon: icon,
+      draggable: true,
+      showCancelButton: false,
+      confirmButtonText: 'OK',
+      showCloseButton: true,
+      didOpen: () => {
+        if (Swal.isVisible()) {
+          Swal.hideLoading();
+        }
+      }
+    })
   }
 }
