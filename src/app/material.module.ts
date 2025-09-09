@@ -15,11 +15,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   imports: [
     CommonModule,
-
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,
@@ -47,6 +47,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatSnackBarModule,
     MatDialogModule,
     MatAutocompleteModule,
+    MatExpansionModule
   ]
 })
 export class MaterialModule {}

@@ -8,9 +8,22 @@
         <a mat-list-item [routerLink]="['movimentacoes']" routerLinkActive="active">
           <mat-icon>swap_horiz</mat-icon> Movimentações
         </a>
-        <a mat-list-item [routerLink]="['relatorios']" routerLinkActive="active">
-          <mat-icon>bar_chart</mat-icon> Relatórios
-        </a>
+        <mat-expansion-panel class="mat-nav-list">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon>bar_chart</mat-icon> Relatórios
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-nav-list>
+            <a mat-list-item [routerLink]="['relatorio/precos']" routerLinkActive="active">
+              Preços
+            </a>
+            <a mat-list-item [routerLink]="['relatorio/compras']" routerLinkActive="active">
+              Compras
+            </a>
+          </mat-nav-list>
+        </mat-expansion-panel>
       </mat-nav-list>
     </mat-sidenav>
 

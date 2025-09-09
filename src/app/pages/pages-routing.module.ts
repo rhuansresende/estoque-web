@@ -1,10 +1,11 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {NotFoundComponent} from "./not-found/not-found.component";
-import { PaginaInicialComponent } from "./pagina-inicial/pagina-inicial.component";
-import { ProdutosComponent } from "./produtos/produtos.component";
-import { MovimentacoesComponent } from "./movimentacoes/movimentacoes.component";
-import { RelatoriosComponent } from "./relatorios/relatorios.component";
+import {PaginaInicialComponent} from "./pagina-inicial/pagina-inicial.component";
+import {ProdutosComponent} from "./produtos/produtos.component";
+import {MovimentacoesComponent} from "./movimentacoes/movimentacoes.component";
+import {RelatorioComprasComponent} from "./relatorio-compras/relatorio-compras.component";
+import {RelatorioPrecosComponent} from "./relatorio-precos/relatorio-precos.component";
 
 const routes: Routes = [
   {
@@ -29,13 +30,12 @@ const routes: Routes = [
         component: MovimentacoesComponent
       },
       {
-        path: 'relatorios',
-        component: RelatoriosComponent
+        path: 'relatorio/compras',
+        component: RelatorioComprasComponent
       },
       {
-        path: '',
-        redirectTo: 'produtos',
-        pathMatch: 'full'
+        path: 'relatorio/precos',
+        component: RelatorioPrecosComponent
       }
     ]
   },
