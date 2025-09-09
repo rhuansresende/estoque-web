@@ -4,10 +4,12 @@ import { CommonModule } from "@angular/common";
 import { MaterialModule } from "../../material.module";
 import { ReactiveFormsModule } from "@angular/forms";
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { MovimentacaoFormDialogComponent } from "./movimentacao-form-dialog-component/movimentacao-form-dialog.component";
 
 @NgModule({
   declarations: [
-    ProdutoFormDialogComponent
+    ProdutoFormDialogComponent,
+    MovimentacaoFormDialogComponent
   ],
   imports: [
     CommonModule,
@@ -16,7 +18,8 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     FlexLayoutModule
   ],
   exports: [
-    ProdutoFormDialogComponent
+    ProdutoFormDialogComponent,
+    MovimentacaoFormDialogComponent
   ]
 })
 export class DialogModule {}

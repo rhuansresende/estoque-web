@@ -33,4 +33,9 @@ export class ProdutoService {
     const url = `${this.environment.BASE_URL}/produtos/${idProduto}`;
     return this._http.delete(`${url}`);
   }
+
+  buscarProdutos(filtro: string): Observable<ProdutoModel[]> {
+    const url = `${this.environment.BASE_URL}/produtos/buscar?q=${filtro}`;
+    return this._http.get<ProdutoModel[]>(`${url}`);
+  }
 }
