@@ -1,0 +1,27 @@
+.critico {
+  background-color: #f44336; /* vermelho */
+  color: white;
+}
+
+.alerta {
+  background-color: #ff9800; /* laranja */
+  color: white;
+}
+
+.informacao {
+  background-color: #2196f3; /* azul */
+  color: white;
+}
+
+/* Garantir botões brancos */
+.critico button,
+.alerta button,
+.informacao button {
+  color: white !important;
+}
+
+.critico mat-icon,
+.alerta mat-icon,
+.informacao mat-icon {
+  color: white !important;
+}

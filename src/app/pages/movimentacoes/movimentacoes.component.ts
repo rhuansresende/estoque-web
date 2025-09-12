@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import {catchError, Observable, of } from "rxjs";
+import {Component, OnInit} from '@angular/core';
+import {catchError, Observable, of} from "rxjs";
 import {MovimentacaoService} from '../../services/movimentacao.service';
-import { MatDialog } from '@angular/material/dialog';
-import { MovimentacaoModel } from '../../model/movimentacao.model';
+import {SnackbarService} from '../../services/snackbar.service';
+import {MatDialog} from '@angular/material/dialog';
+import {MovimentacaoModel} from '../../model/movimentacao.model';
 import {
   MovimentacaoFormDialogComponent
 } from '../../components/dialogs/movimentacao-form-dialog-component/movimentacao-form-dialog.component';
-import {ProdutoModel} from '../../model/produto.model';
 
 @Component({
   selector: 'app-movimentacoes',
@@ -28,6 +28,7 @@ export class MovimentacoesComponent implements OnInit {
 
   constructor(
     private service: MovimentacaoService,
+    private snackbarService: SnackbarService,
     private dialog: MatDialog
   ) {}
 
@@ -38,8 +39,8 @@ export class MovimentacoesComponent implements OnInit {
   consultarMovimentacoes() {
     this.movimentacoes$ = this.service.consultarMovimentacoes()
       .pipe(
-        catchError(err => {
-          console.log(err);
+        catchError((err) => {
+          this.snackbarService.show(err.error.message)
           return of([]);
         })
       );
@@ -55,6 +56,7 @@ export class MovimentacoesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.snackbarService.show("Movimentação Criada com sucesso!", 'success');
         this.consultarMovimentacoes();
       }
     });
@@ -70,11 +72,31 @@ export class MovimentacoesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.snackbarService.show("Movimentação Editada com sucesso!", 'success');
         this.consultarMovimentacoes();
       }
     });
   }
 
-  excluirMovimentacao(movimentacao: MovimentacaoModel) {}
+  excluirMovimentacao(movimentacao: MovimentacaoModel) {
+    const dados = {
+      movimentacao,
+      delete: true
+    }
+
+    const dialogRef = this.dialog.open(MovimentacaoFormDialogComponent, {
+      width: '90%',
+      maxWidth: '600px',
+      minWidth: '300px',
+      data: dados
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.snackbarService.show("Movimentação Excluída com sucesso!", 'success');
+        this.consultarMovimentacoes();
+      }
+    });
+  }
 
 }

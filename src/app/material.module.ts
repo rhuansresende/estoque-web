@@ -31,7 +31,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatSelectModule,
     MatCardModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule
   ],
   exports: [
     MatSidenavModule,

@@ -5,9 +5,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {MovimentacaoModel} from "../../../model/movimentacao.model";
 import {catchError, debounceTime, distinctUntilChanged, Observable, of, switchMap} from "rxjs";
 import {ProdutoService} from "../../../services/produto.service";
-import { MovimentacaoService } from "../../../services/movimentacao.service";
-import { isNull } from "../../../util/objeto.util";
-import Swal, {SweetAlertIcon} from "sweetalert2";
+import {MovimentacaoService} from "../../../services/movimentacao.service";
+import {SnackbarService} from "../../../services/snackbar.service";
 
 @Component({
   selector: 'app-movimentacao-form-dialog-component',
@@ -27,21 +26,23 @@ export class MovimentacaoFormDialogComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private _dialogRef: MatDialogRef<MovimentacaoFormDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: MovimentacaoModel | null,
+    @Inject(MAT_DIALOG_DATA) public data: any | null,
     private produtoService: ProdutoService,
-    private movimentacaoService: MovimentacaoService
+    private movimentacaoService: MovimentacaoService,
+    private snackbarService: SnackbarService
   ) {
     this.formulario = this._fb.group({
-      id: this._fb.control(data?.id || ''),
-      produto: this._fb.control(data?.produto?.nome || '', [Validators.required]),
-      tipo: this._fb.control(data?.tipo || '', [Validators.required]),
-      quantidade: this._fb.control(data?.quantidade || '', [Validators.required]),
-      precoCompra: this._fb.control(data?.precoCompra || ''),
-      justificativa: this._fb.control(data?.justificativa || '')
+      id: this._fb.control(data?.movimentacao.id || ''),
+      produto: this._fb.control(data?.movimentacao.produto?.nome || '', [Validators.required]),
+      tipo: this._fb.control(data?.movimentacao.tipo || '', [Validators.required]),
+      quantidade: this._fb.control(data?.movimentacao.quantidade || '', [Validators.required]),
+      precoCompra: this._fb.control(data?.movimentacao.precoCompra || ''),
+      justificativa: this._fb.control(data?.movimentacao.justificativa || '')
     });
   }
 
   ngOnInit() {
+    console.log(this.data);
     const produtoControl = this.formulario.get('produto') as FormControl;
     if (this.data?.produto) {
       this.produtoService.buscarProdutos(this.data.produto.nome).subscribe(produtos => {
@@ -90,15 +91,15 @@ export class MovimentacaoFormDialogComponent implements OnInit {
         this.movimentacaoService.editarMovimentacao(novaMovimentacao).subscribe(
           (movimentacao) => this._dialogRef.close(movimentacao),
           (err) => {
-            this.showModal('Erro', err.error.message, 'error');
-            console.log("Erro Salvar Movimentação: " + err.error);
+            this.snackbarService.error(err.error.message);
           });
-      } else {
+      } else if (this.data && this.data.delete) {
+        console.log(this.data.delete);
+      }else {
         this.movimentacaoService.salvarMovimentacao(novaMovimentacao).subscribe(
           (movimentacao) => this._dialogRef.close(movimentacao),
           (err) => {
-            this.showModal('Erro', err.error.message, 'error');
-            console.log("Erro Salvar Movimentação: " + err.error);
+            this.snackbarService.error(err.error.message);
           });
       }
 
@@ -107,22 +108,5 @@ export class MovimentacaoFormDialogComponent implements OnInit {
 
   cancelar() {
     this._dialogRef.close(null);
-  }
-
-  showModal(title: string, text: string, icon: SweetAlertIcon) {
-    Swal.fire({
-      titleText: title,
-      text: text,
-      icon: icon,
-      draggable: true,
-      showCancelButton: false,
-      confirmButtonText: 'OK',
-      showCloseButton: true,
-      didOpen: () => {
-        if (Swal.isVisible()) {
-          Swal.hideLoading();
-        }
-      }
-    })
   }
 }

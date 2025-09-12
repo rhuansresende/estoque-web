@@ -1,14 +1,14 @@
 import {CommonModule, NgOptimizedImage} from "@angular/common";
 import {NgModule} from "@angular/core";
-import { MovimentacoesRoutingModule } from "./movimentacoes-routing.module";
-import { MovimentacoesComponent } from "./movimentacoes.component";
 import { MaterialModule } from "../../material.module";
 import {DialogModule} from '../../components/dialogs/dialog.module';
 import {SnackbarModule} from '../../components/snackbar/snackbar.module';
+import { MensagensRoutingModule } from "./mensagens-routing.module";
+import { MensagensComponent } from "./mensagens.component";
 
 @NgModule({
   imports: [
-    MovimentacoesRoutingModule,
+    MensagensRoutingModule,
     CommonModule,
     NgOptimizedImage,
     MaterialModule,
@@ -16,8 +16,8 @@ import {SnackbarModule} from '../../components/snackbar/snackbar.module';
     SnackbarModule
   ],
   declarations: [
-    MovimentacoesComponent
+    MensagensComponent
   ],
   providers: []
 })
-export class MovimentacoesModule {}
+export class MensagensModule {}

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {catchError, Observable, of } from "rxjs";
-import {ProdutoModel} from '../../model/produto.model';
-import {RelatorioService} from '../../services/relatorio.service';
+import {ProdutoModel} from '../../../model/produto.model';
+import {RelatorioService} from '../../../services/relatorio.service';
+import {SnackbarService} from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-relatorio-compras',
@@ -21,6 +22,7 @@ export class RelatorioComprasComponent implements OnInit {
 
   constructor(
     private service: RelatorioService,
+    private snackbarService: SnackbarService
   ) {}
 
   ngOnInit() {
@@ -31,7 +33,7 @@ export class RelatorioComprasComponent implements OnInit {
     this.compras$ = this.service.consultarRelatorioCompras()
       .pipe(
         catchError(err => {
-          console.log(err);
+          this.snackbarService.show(err.error.message);
           return of([]);
         })
       );

@@ -1,9 +1,9 @@
-import { Component, Inject } from '@angular/core';
-import {FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ProdutoModel } from "../../../model/produto.model";
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {Component, Inject} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ProdutoModel} from "../../../model/produto.model";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {ProdutoService} from '../../../services/produto.service';
-import Swal, { SweetAlertIcon } from "sweetalert2";
+import {SnackbarService} from "../../../services/snackbar.service";
 
 @Component({
   selector: 'app-produto-form-dialog-component',
@@ -18,7 +18,8 @@ export class ProdutoFormDialogComponent {
     private _fb: FormBuilder,
     private _dialogRef: MatDialogRef<ProdutoFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ProdutoModel | null,
-    private produtoService: ProdutoService
+    private produtoService: ProdutoService,
+    private snackbarService: SnackbarService
   ) {
     this.formulario = this._fb.group({
       id: this._fb.control(data?.id || ''),
@@ -45,14 +46,14 @@ export class ProdutoFormDialogComponent {
         this.produtoService.editarProduto(produto).subscribe(
           (produto) => this._dialogRef.close(produto),
           (err) => {
-            this.showModal('Erro', err.error.message, 'error');
+            this.snackbarService.show(err.error.message);
           }
         );
       } else {
         this.produtoService.salvarProduto(produto).subscribe(
           (produto) => this._dialogRef.close(produto),
           (err) => {
-            this.showModal('Erro', err.error.message, 'error');
+            this.snackbarService.show(err.error.message);
           }
         );
       }
@@ -61,22 +62,5 @@ export class ProdutoFormDialogComponent {
 
   cancelar() {
     this._dialogRef.close(null);
-  }
-
-  showModal(title: string, text: string, icon: SweetAlertIcon) {
-    Swal.fire({
-      titleText: title,
-      text: text,
-      icon: icon,
-      draggable: true,
-      showCancelButton: false,
-      confirmButtonText: 'OK',
-      showCloseButton: true,
-      didOpen: () => {
-        if (Swal.isVisible()) {
-          Swal.hideLoading();
-        }
-      }
-    })
   }
 }

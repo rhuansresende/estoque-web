@@ -1,11 +1,11 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
-import { RelatorioPrecosComponent } from "./relatorio-precos.component";
+import { MensagensComponent } from "./mensagens.component";
 
 const routes: Routes = [
   {
     path: '',
-    component: RelatorioPrecosComponent
+    component: MensagensComponent
   }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class RelatorioPrecosRoutingModule {}
+export class MensagensRoutingModule {}

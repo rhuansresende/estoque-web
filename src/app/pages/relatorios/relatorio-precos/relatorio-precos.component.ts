@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {catchError, Observable, of } from "rxjs";
-import {RelatorioService} from '../../services/relatorio.service';
+import {RelatorioService} from '../../../services/relatorio.service';
+import {SnackbarService} from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-relatorio-precos',
@@ -21,6 +22,7 @@ export class RelatorioPrecosComponent implements OnInit {
 
   constructor(
     private service: RelatorioService,
+    private snackbarService: SnackbarService
   ) {}
 
   ngOnInit() {
@@ -31,7 +33,7 @@ export class RelatorioPrecosComponent implements OnInit {
     this.precos$ = this.service.consultarRelatorioPrecos()
       .pipe(
         catchError(err => {
-          console.log(err);
+          this.snackbarService.show(err.error.message);
           return of([]);
         })
       );

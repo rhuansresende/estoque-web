@@ -1,4 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { MatSidenav } from "@angular/material/sidenav";
 
 @Component({
   selector: 'estoque-pagina-inicial',
@@ -6,7 +7,12 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
   standalone: false,
   styleUrl: './pagina-inicial.component.scss'
 })
-export class PaginaInicialComponent implements OnInit {
-    ngOnInit(): void {
-    }
+export class PaginaInicialComponent {
+
+  @ViewChild('sidenav') sidenav!: MatSidenav;
+
+  toggleSidenav() {
+    this.sidenav.toggle();
+  }
+
 }

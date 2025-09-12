@@ -2,10 +2,6 @@ import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {NotFoundComponent} from "./not-found/not-found.component";
 import {PaginaInicialComponent} from "./pagina-inicial/pagina-inicial.component";
-import {ProdutosComponent} from "./produtos/produtos.component";
-import {MovimentacoesComponent} from "./movimentacoes/movimentacoes.component";
-import {RelatorioComprasComponent} from "./relatorio-compras/relatorio-compras.component";
-import {RelatorioPrecosComponent} from "./relatorio-precos/relatorio-precos.component";
 
 const routes: Routes = [
   {
@@ -22,20 +18,25 @@ const routes: Routes = [
     component: PaginaInicialComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'mensagens',
+        pathMatch: 'full'
+      },
+      {
         path: 'produtos',
-        component: ProdutosComponent
+        loadChildren: () => import('./produtos/produtos.module').then(m => m.ProdutosModule)
       },
       {
         path: 'movimentacoes',
-        component: MovimentacoesComponent
+        loadChildren: () => import('./movimentacoes/movimentacoes.module').then(m => m.MovimentacoesModule)
       },
       {
-        path: 'relatorio/compras',
-        component: RelatorioComprasComponent
+        path: 'relatorios',
+        loadChildren: () => import('./relatorios/relatorios.module').then(m => m.RelatoriosModule)
       },
       {
-        path: 'relatorio/precos',
-        component: RelatorioPrecosComponent
+        path: 'mensagens',
+        loadChildren: () => import('./mensagens/mensagens.module').then(m => m.MensagensModule)
       }
     ]
   },

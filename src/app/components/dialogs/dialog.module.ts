@@ -6,11 +6,13 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { MovimentacaoFormDialogComponent } from "./movimentacao-form-dialog-component/movimentacao-form-dialog.component";
 import {CurrencyMaskDirective} from '../../directives/CurrencyMaskDirective';
+import { MensagemFormDialogComponent } from "./mensagem-form-dialog-component/mensagem-form-dialog.component";
 
 @NgModule({
   declarations: [
     ProdutoFormDialogComponent,
     MovimentacaoFormDialogComponent,
+    MensagemFormDialogComponent,
     CurrencyMaskDirective
   ],
   imports: [
@@ -21,7 +23,8 @@ import {CurrencyMaskDirective} from '../../directives/CurrencyMaskDirective';
   ],
   exports: [
     ProdutoFormDialogComponent,
-    MovimentacaoFormDialogComponent
+    MovimentacaoFormDialogComponent,
+    MensagemFormDialogComponent,
   ]
 })
 export class DialogModule {}

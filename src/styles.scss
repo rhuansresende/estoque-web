@@ -37,3 +37,17 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Remove fundo escuro do container MDC do MatSnackBar */
+.custom-snack-bar-container .mdc-snackbar__surface {
+  background-color: transparent !important; /* fundo transparente */
+  box-shadow: none !important;               /* remove sombra do container */
+  padding: 0 !important;                     /* remove padding extra */
+  min-height: 0 !important;
+}
+
+/* Opcional: remove pseudo-elementos se existirem */
+.custom-snack-bar-container .mdc-snackbar__surface::after {
+  content: none !important;
+}
+

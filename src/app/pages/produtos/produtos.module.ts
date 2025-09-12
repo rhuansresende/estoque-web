@@ -4,6 +4,7 @@ import { ProdutosRoutingModule } from "./produtos-routing.module";
 import { ProdutosComponent } from "./produtos.component";
 import { MaterialModule } from "../../material.module";
 import { DialogModule } from "../../components/dialogs/dialog.module";
+import { SnackbarModule } from "../../components/snackbar/snackbar.module";
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { DialogModule } from "../../components/dialogs/dialog.module";
     CommonModule,
     NgOptimizedImage,
     MaterialModule,
-    DialogModule
+    DialogModule,
+    SnackbarModule
   ],
   declarations: [
     ProdutosComponent
