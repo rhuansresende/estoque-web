@@ -4,7 +4,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
 import {MaterialModule} from "./material.module";
-import {environment} from "./environments/environment";
+import {environment} from "../environments/environment";
 import {HttpClientModule} from "@angular/common/http";
 import {ReactiveFormsModule} from "@angular/forms";
 import {FlexLayoutModule} from '@angular/flex-layout';

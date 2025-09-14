@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start:dev": "ng serve -o --configuration=development --host local.estoque.com.br",
-    "start:prod": "ng serve -o --configuration=production",
+    "start:prod": "ng serve -o --configuration=production --host estoque.bs.emporio.com.br",
     "build:dev": "ng build --deploy-url=/estoque/ --base-href=/estoque/",
     "build:prod": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build --configuration=production --deploy-url=/estoque/ --base-href=/estoque/",
     "watch": "ng build --watch --configuration development",
