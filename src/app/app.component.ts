@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
+import { MatSidenav } from "@angular/material/sidenav";
 
 @Component({
   selector: 'estoque-root',
@@ -6,4 +7,12 @@ import {Component} from '@angular/core';
   standalone: false,
   styleUrl: './app.component.scss'
 })
-export class AppComponent {}
+export class AppComponent {
+
+  @ViewChild('sidenav') sidenav!: MatSidenav;
+
+  openSidenav() {
+    this.sidenav.open();
+  }
+
+}

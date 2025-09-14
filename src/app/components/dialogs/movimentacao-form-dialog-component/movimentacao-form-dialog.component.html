@@ -1,0 +1,65 @@
+<main>
+  <ng-container>
+    <section fxLayout="column" fxLayoutGap="1rem">
+      <section fxLayoutAlign="center center">
+        <h2 mat-dialog-title>
+          {{ data ? 'Editar Movimentação' : 'Nova Movimentação' }}
+        </h2>
+      </section>
+      <mat-dialog-content>
+        <section fxLayout="column">
+          <form [formGroup]="formulario" fxLayout="column">
+            <mat-form-field appearance="outline">
+              <mat-label>Produto</mat-label>
+              <input matInput type="text" formControlName="produto" [matAutocomplete]="auto">
+              <mat-error *ngIf="formulario.get('produto')?.hasError('required')">
+                Campo obrigatório
+              </mat-error>
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProdutoMovimentacao">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                  {{ option.nome }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo de Movimentação</mat-label>
+              <mat-select formControlName="tipo">
+                <mat-option *ngFor="let tipo of tipos" [value]="tipo">
+                  {{ tipo }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="formulario.get('tipo')?.hasError('required')">
+                Campo obrigatório
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Quantidade</mat-label>
+              <input matInput type="number" formControlName="quantidade">
+              <mat-error *ngIf="formulario.get('quantidade')?.hasError('required')">
+                Campo obrigatório
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" *ngIf="formulario.get('tipo')?.value === 'ENTRADA'">
+              <mat-label>Preço de Compra</mat-label>
+              <input matInput appCurrencyMask maxlength="15" formControlName="precoCompra">
+            </mat-form-field>
+            <mat-form-field appearance="outline" *ngIf="data">
+              <mat-label>Justificativa</mat-label>
+              <textarea matInput formControlName="justificativa"></textarea>
+            </mat-form-field>
+          </form>
+        </section>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button mat-raised-button color="primary" (click)="cancelar()">
+          <mat-icon>cancel</mat-icon>
+          Cancelar
+        </button>
+        <button mat-raised-button color="primary" (click)="salvar()" [disabled]="formulario.invalid">
+          <mat-icon>save</mat-icon>
+          Salvar
+        </button>
+      </mat-dialog-actions>
+    </section>
+  </ng-container>
+</main>

@@ -5,7 +5,7 @@ import {NotFoundComponent} from "./not-found/not-found.component";
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'pagina-inicial',
+    redirectTo: 'mensagens',
     pathMatch: 'full'
   },
   {
@@ -13,9 +13,26 @@ const routes: Routes = [
     component: NotFoundComponent
   },
   {
-    path: 'pagina-inicial',
-    loadChildren: () => import('./pagina-inicial/pagina-inicial.module').then(m => m.PaginaInicialModule)
+    path: 'mensagens',
+    loadChildren: () => import('./mensagens/mensagens.module').then(m => m.MensagensModule)
   },
+  {
+    path: 'produtos',
+    loadChildren: () => import('./produtos/produtos.module').then(m => m.ProdutosModule)
+  },
+  {
+    path: 'movimentacoes',
+    loadChildren: () => import('./movimentacoes/movimentacoes.module').then(m => m.MovimentacoesModule)
+  },
+  {
+    path: 'relatorios',
+    loadChildren: () => import('./relatorios/relatorios.module').then(m => m.RelatoriosModule)
+  },
+
+  {
+    path: '**',
+    redirectTo: '404'
+  }
 ];
 
 @NgModule({

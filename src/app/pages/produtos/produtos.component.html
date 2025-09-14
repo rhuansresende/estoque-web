@@ -1,0 +1,136 @@
+<main fxLayout="column" fxLayoutGap="0.5rem">
+  <mat-accordion multi>
+    <mat-expansion-panel [expanded]="painelPesquisaAberto">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Pesquisa de Produtos
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <ng-container>
+        <section fxLayout="column" fxLayoutGap="1rem">
+          <section fxLayout="row" fxLayoutGap="1rem">
+            <form [formGroup]="formulario" fxFlex fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+              <mat-form-field appearance="outline" fxFlex="50">
+                <mat-label>Nome do Produto</mat-label>
+                <input matInput formControlName="nome">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" fxFlex="50">
+                <mat-label>Situação do Produto</mat-label>
+                <mat-select formControlName="situacao">
+                  <mat-option *ngFor="let situacao of situacoes" [value]="situacao.codigo">
+                    {{ situacao.descricao }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </form>
+          </section>
+          <section fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="end center">
+            <button mat-raised-button color="primary" (click)="novoProduto()">
+              <mat-icon>add</mat-icon> Novo Produto
+            </button>
+            <button mat-raised-button (click)="limpar()">
+              <mat-icon>clear</mat-icon>
+              Limpar
+            </button>
+            <button mat-raised-button color="primary" (click)="getProdutos()" [disabled]="formulario.invalid">
+              <mat-icon>search</mat-icon>
+              Pesquisar
+            </button>
+          </section>
+        </section>
+      </ng-container>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="painelProdutosAberto">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Produtos
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <ng-container>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>Nome</th>
+            <td mat-cell *matCellDef="let produto">{{produto.nome}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="quantidadeAtual">
+            <th mat-header-cell *matHeaderCellDef>Quantidade Atual em Estoque</th>
+            <td mat-cell *matCellDef="let produto">{{produto.quantidadeAtual}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="quantidadeMinima">
+            <th mat-header-cell *matHeaderCellDef>Quantidade Mínima em Estoque</th>
+            <td mat-cell *matCellDef="let produto">{{produto.quantidadeMinima}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let produto">
+              <button mat-button color="primary" (click)="editarProduto(produto)" matTooltip="Editar Produto">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button *ngIf="produto.situacao == 'ATIVO'" mat-button color="warn" (click)="excluirProduto(produto)" matTooltip="Excluir Produto">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button *ngIf="produto.situacao == 'INATIVO'" mat-button color="warn" (click)="ativarProduto(produto)" matTooltip="Ativar Produto">
+                <mat-icon>toggle_on</mat-icon>
+
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr class="no-data-row" *matNoDataRow>
+            <td colspan="5">Nenhum produto cadastrado.</td>
+          </tr>
+        </table>
+        <mat-paginator [length]="totalRegistros"
+                       [pageSize]="pageSize"
+                       [pageIndex]="pageIndex"
+                       [pageSizeOptions]="[5, 10, 20]"
+                       showFirstLastButtons
+                       (page)="onPageChange($event)">
+        </mat-paginator>
+      </ng-container>
+
+    </mat-expansion-panel>
+
+
+
+  </mat-accordion>
+
+
+
+
+  <!--
+
+  <ng-container *ngIf="(produtos$ | async) as produtos; else nenhumProdutoEncontrado">
+    <ng-container *ngIf="produtos.length > 0; else nenhumProdutoEncontrado">
+      <section fxLayout="row" fxLayoutGap="1rem">
+
+        <button mat-raised-button color="primary" (click)="novoProduto()">
+          <mat-icon>add</mat-icon> Novo Produto
+        </button>
+
+
+      </section>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #nenhumProdutoEncontrado>
+    <section fxLayout="row" fxLayoutAlign="center center">
+      <section fxLayout="column" fxLayoutGap="1rem" fxFlex.gt-md="30">
+        <button mat-raised-button color="primary" (click)="novoProduto()">
+          <mat-icon>add</mat-icon> Novo Produto
+        </button>
+        <h2>Nenhum produto cadastrado.</h2>
+      </section>
+    </section>
+  </ng-template>
+</main>
+-->
