@@ -25,3 +25,14 @@
 .informacao mat-icon {
   color: white !important;
 }
+
+.no-data-row {
+  td {
+    text-align: center;
+    color: #ffffff; // branco
+    font-weight: 500;
+    background: rgba(0, 0, 0, 0.2); // opcional: fundo levemente escuro
+    padding: 1rem;
+  }
+}
+

@@ -5,7 +5,7 @@ import {QuicklinkModule} from "ngx-quicklink";
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'pages/pagina-inicial',
+    redirectTo: 'pages/mensagens',
     pathMatch: 'full'
   },
   {

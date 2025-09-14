@@ -1,18 +1,30 @@
 import {LOCALE_ID, NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
 import {MaterialModule} from "./material.module";
-import { environment } from "./environments/environment";
-import { HttpClientModule } from "@angular/common/http";
-import { ReactiveFormsModule } from "@angular/forms";
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { registerLocaleData } from "@angular/common";
+import {environment} from "./environments/environment";
+import {HttpClientModule} from "@angular/common/http";
+import {ReactiveFormsModule} from "@angular/forms";
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {DatePipe, registerLocaleData} from "@angular/common";
 import localePt from '@angular/common/locales/pt';
-import { CurrencyMaskDirective } from "./directives/CurrencyMaskDirective";
+import {MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
 
 registerLocaleData(localePt, 'pt-BR');
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY', // entrada
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY', // input no campo
+    monthYearLabel: 'MM YYYY',
+    dateA11yLabel: 'DD/MM/YYYY',
+    monthYearA11yLabel: 'MM YYYY',
+  },
+};
 
 @NgModule({
   declarations: [
@@ -34,9 +46,18 @@ registerLocaleData(localePt, 'pt-BR');
       useValue: 'pt-BR'
     },
     {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'pt-BR'
+    },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: MY_DATE_FORMATS
+    },
+    {
       provide: 'ENVIRONMENT',
       useValue: environment
     },
+    DatePipe
   ],
   bootstrap: [
     AppComponent

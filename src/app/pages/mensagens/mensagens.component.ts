@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import {catchError, Observable, of} from "rxjs";
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MensagemModel} from '../../model/mensagem.model';
+import {TipoMensagemModel} from '../../model/tipo-mensagem.model';
 import {MensagemService} from '../../services/mensagem.service';
 import {SnackbarService} from '../../services/snackbar.service';
 import {
   MensagemFormDialogComponent
 } from '../../components/dialogs/mensagem-form-dialog-component/mensagem-form-dialog.component';
-import { MatDialog } from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'estoque-mensagens.component',
@@ -14,9 +17,14 @@ import { MatDialog } from "@angular/material/dialog";
   templateUrl: './mensagens.component.html',
   styleUrl: './mensagens.component.scss'
 })
-export class MensagensComponent implements OnInit {
+export class MensagensComponent implements AfterViewInit {
 
-  mensagens$: Observable<MensagemModel[]> = of([]);
+  formulario: FormGroup;
+  tiposMensagem = Array<TipoMensagemModel>();
+  maxDate: Date = new Date();
+
+  painelPesquisaAberto = true;
+  painelMensagensAberto = true;
 
   displayedColumns: string[] = [
     'titulo',
@@ -26,24 +34,54 @@ export class MensagensComponent implements OnInit {
     'acoes'
   ];
 
+  dataSource = new MatTableDataSource<MensagemModel>([]);
+
+  totalRegistros = 0;
+  pageSize = 5;
+  pageIndex = 0;
+
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
+
   constructor(
+    private _fb: FormBuilder,
     private service: MensagemService,
     private snackbarService: SnackbarService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.formulario = this._fb.group({
+      titulo: this._fb.control(null),
+      tipoMensagem: this._fb.control(null),
+      dataCriacao: this._fb.control(new Date())
+    });
+  }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.getTipoMensagens();
     this.getMensagens();
   }
 
+  getTipoMensagens() {
+    this.service.consultarTipoMensagens().subscribe({
+      next: (res) => this.tiposMensagem = res,
+      error: (err) => this.snackbarService.show(err.error.message)
+    });
+  }
+
   getMensagens() {
-    this.mensagens$ = this.service.consultarMensagens()
-      .pipe(
-        catchError(err => {
-          this.snackbarService.show(err.error.message);
-          return of([]);
-        })
-      );
+    this.service.consultarMensagens(
+      this.pageIndex,
+      this.pageSize,
+      this.formulario.get('titulo')?.value,
+      this.formulario.get('tipoMensagem')?.value,
+      this.formulario.get('dataCriacao')?.value).subscribe({
+      next: (page) => {
+        this.dataSource.data = page.content;
+        this.totalRegistros = page.totalElements;
+      },
+      error: (err) => this.snackbarService.show(err.error.message)
+    })
   }
 
   lerMensagem(mensagem: MensagemModel) {
@@ -69,6 +107,20 @@ export class MensagensComponent implements OnInit {
         this.getMensagens();
       },
       error: (err) => this.snackbarService.show(err.error.message)
+    });
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getMensagens();
+  }
+
+  limpar() {
+    this.formulario.reset({
+      titulo: null,
+      tipoMensagem: null,
+      dataCriacao: new Date()
     });
     this.getMensagens();
   }

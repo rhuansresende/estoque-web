@@ -16,6 +16,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -32,7 +36,11 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatCardModule,
     MatSnackBarModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatPaginatorModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTooltipModule
   ],
   exports: [
     MatSidenavModule,
@@ -48,7 +56,11 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatSnackBarModule,
     MatDialogModule,
     MatAutocompleteModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatPaginatorModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTooltipModule
   ]
 })
 export class MaterialModule {}
