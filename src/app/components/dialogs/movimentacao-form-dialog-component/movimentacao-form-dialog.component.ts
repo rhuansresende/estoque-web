@@ -42,7 +42,6 @@ export class MovimentacaoFormDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.data);
     const produtoControl = this.formulario.get('produto') as FormControl;
     if (this.data?.produto) {
       this.produtoService.buscarProdutos(this.data.produto.nome).subscribe(produtos => {
@@ -84,7 +83,7 @@ export class MovimentacaoFormDialogComponent implements OnInit {
         produto: this.formulario.get('produto')!.value,
         tipo: this.formulario.get('tipo')!.value,
         quantidade: this.formulario.get('quantidade')!.value,
-        precoCompra: this.formulario.get('precoCompra')?.value,
+        precoCompra: parseFloat(this.formulario.get('precoCompra')?.value.replace(/[^0-9,]/g, '').replace(',', '.')),
         justificativa: this.formulario.get('justificativa')?.value
       };
       if (this.data) {

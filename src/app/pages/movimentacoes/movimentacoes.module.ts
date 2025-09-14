@@ -5,6 +5,8 @@ import { MovimentacoesComponent } from "./movimentacoes.component";
 import { MaterialModule } from "../../material.module";
 import {DialogModule} from '../../components/dialogs/dialog.module';
 import {SnackbarModule} from '../../components/snackbar/snackbar.module';
+import { ReactiveFormsModule } from "@angular/forms";
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
   imports: [
@@ -12,6 +14,8 @@ import {SnackbarModule} from '../../components/snackbar/snackbar.module';
     CommonModule,
     NgOptimizedImage,
     MaterialModule,
+    ReactiveFormsModule,
+    FlexLayoutModule,
     DialogModule,
     SnackbarModule
   ],

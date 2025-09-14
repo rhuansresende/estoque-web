@@ -45,7 +45,6 @@ export class MensagensComponent implements AfterViewInit {
 
   constructor(
     private _fb: FormBuilder,
-    private _cd: ChangeDetectorRef,
     private service: MensagemService,
     private snackbarService: SnackbarService,
     private dialog: MatDialog
