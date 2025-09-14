@@ -1,15 +1,32 @@
-<main>
-  <ng-container *ngIf="(precos$ | async) as precos; else nenhumPrecoEncontrado">
+<main fxLayout="column" fxLayoutGap="0.5rem">
+  <mat-accordion multi>
+    <mat-expansion-panel [expanded]="painelOpcoesAberto">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Opções
+        </mat-panel-title>
+      </mat-expansion-panel-header>
 
-    <ng-container *ngIf="precos.length > 0; else nenhumPrecoEncontrado">
+      <ng-container>
+        <section fxLayout="column" fxLayoutGap="1rem">
+          <section fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="end center">
+            <button mat-raised-button color="primary" (click)="emitirRelatorio()">
+              <mat-icon>picture_as_pdf</mat-icon> Emitir Relatório em PDF
+            </button>
+          </section>
+        </section>
+      </ng-container>
+    </mat-expansion-panel>
 
-      <section fxLayout="row" fxLayoutGap="1rem">
+    <mat-expansion-panel [expanded]="painelRelatorioAberto">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Relatório de Compras
+        </mat-panel-title>
+      </mat-expansion-panel-header>
 
-        <button mat-raised-button color="primary" (click)="emitirRelatorio()">
-          <mat-icon>picture_as_pdf</mat-icon> Emitir Relatório em PDF
-        </button>
-
-        <table mat-table [dataSource]="precos$" class="mat-elevation-z8">
+      <ng-container>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
           <ng-container matColumnDef="produto">
             <th mat-header-cell *matHeaderCellDef>Produto</th>
             <td mat-cell *matCellDef="let produto">{{produto.nome}}</td>
@@ -36,8 +53,40 @@
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
+          <tr class="no-data-row" *matNoDataRow>
+            <td colspan="5">Nenhum Produto com Preço de Venda Sugerido</td>
+          </tr>
         </table>
+        <mat-paginator
+          [length]="totalRegistros"
+          [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+          (page)="onPageChange($event)">
+        </mat-paginator>
+      </ng-container>
+    </mat-expansion-panel>
+  </mat-accordion>
+</main>
+
+
+<!--<main>
+
+
+
+
+  <ng-container *ngIf="(precos$ | async) as precos; else nenhumPrecoEncontrado">
+
+    <ng-container *ngIf="precos.length > 0; else nenhumPrecoEncontrado">
+
+      <section fxLayout="row" fxLayoutGap="1rem">
+
+        <button mat-raised-button color="primary" (click)="emitirRelatorio()">
+          <mat-icon>picture_as_pdf</mat-icon> Emitir Relatório em PDF
+        </button>
+
+
 
       </section>
 
@@ -47,5 +96,4 @@
 
   <ng-template #nenhumPrecoEncontrado>
     <h1>Nenhum Produto com Preço de Venda Sugerido</h1>
-  </ng-template>
-</main>
+  </ng-template>-->

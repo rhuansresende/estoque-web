@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {catchError, Observable, of } from "rxjs";
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {RelatorioService} from '../../../services/relatorio.service';
 import {SnackbarService} from '../../../services/snackbar.service';
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-relatorio-precos',
@@ -11,7 +12,8 @@ import {SnackbarService} from '../../../services/snackbar.service';
 })
 export class RelatorioPrecosComponent implements OnInit {
 
-  precos$: Observable<any[]> = of([]);
+  painelOpcoesAberto: boolean = true;
+  painelRelatorioAberto: boolean = true;
 
   displayedColumns: string[] = [
     'produto',
@@ -19,6 +21,15 @@ export class RelatorioPrecosComponent implements OnInit {
     'precoVenda',
     'percentualLucro'
   ];
+
+  dataSource = new MatTableDataSource<any>([]);
+
+  totalRegistros = 0;
+  pageSize = 5;
+  pageIndex = 0;
+
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
 
   constructor(
     private service: RelatorioService,
@@ -30,13 +41,28 @@ export class RelatorioPrecosComponent implements OnInit {
   }
 
   consultarRelatorioPrecos() {
-    this.precos$ = this.service.consultarRelatorioPrecos()
-      .pipe(
-        catchError(err => {
-          this.snackbarService.show(err.error.message);
-          return of([]);
-        })
-      );
+    this.service.consultarRelatorioPrecos(this.pageIndex, this.pageSize).subscribe({
+      next: (page) => {
+        this.dataSource.data = page.content;
+        this.totalRegistros = page.totalElements;
+        this.pageIndex = page.number;
+        this.pageSize = page.size;
+
+        // vincula paginator somente quando o dataSource já tem dados
+        if (!this.dataSource.paginator) {
+          this.dataSource.paginator = this.paginator;
+        }
+
+        // força atualização de labels e botões
+        setTimeout(() => {
+          this.paginator.pageIndex = this.pageIndex;
+          this.paginator.length = this.totalRegistros;
+          this.paginator.pageSize = this.pageSize;
+          this.paginator._intl.changes.next();
+        });
+      },
+      error: (err) => this.snackbarService.show(err.error.message)
+    });
   }
 
   emitirRelatorio() {
@@ -48,5 +74,11 @@ export class RelatorioPrecosComponent implements OnInit {
       link.click();
       window.URL.revokeObjectURL(url);
     })
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.consultarRelatorioPrecos();
   }
 }

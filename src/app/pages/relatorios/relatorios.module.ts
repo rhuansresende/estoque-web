@@ -6,6 +6,8 @@ import {SnackbarModule} from '../../components/snackbar/snackbar.module';
 import {RelatoriosRoutingModule} from "./relatorios-routing.module";
 import {RelatorioComprasComponent} from "./relatorio-compras/relatorio-compras.component";
 import {RelatorioPrecosComponent} from "./relatorio-precos/relatorio-precos.component";
+import { ReactiveFormsModule } from "@angular/forms";
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import {RelatorioPrecosComponent} from "./relatorio-precos/relatorio-precos.comp
     CommonModule,
     NgOptimizedImage,
     MaterialModule,
+    ReactiveFormsModule,
+    FlexLayoutModule,
     DialogModule,
     SnackbarModule,
   ],
