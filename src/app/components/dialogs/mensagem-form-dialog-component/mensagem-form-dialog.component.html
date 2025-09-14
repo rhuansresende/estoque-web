@@ -1,0 +1,32 @@
+<main>
+  <ng-container>
+    <section fxLayout="column" fxLayoutGap="1rem">
+      <section fxLayoutAlign="center center">
+        <h2 mat-dialog-title>
+          {{ 'Mensagem' }}
+        </h2>
+      </section>
+      <mat-dialog-content>
+        <section fxLayout="column" fxLayoutGap="1rem">
+          <form [formGroup]="formulario" fxLayout="column">
+            <mat-form-field appearance="outline">
+              <mat-label>Título</mat-label>
+              <input matInput formControlName="titulo" [disabled]="true">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Mensagem</mat-label>
+              <textarea matInput formControlName="mensagem" [disabled]="true"></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Data de Criação</mat-label>
+              <input matInput formControlName="dataCriacao" [disabled]="true">
+            </mat-form-field>
+          </form>
+        </section>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button mat-button (click)="fechar()">Fechar</button>
+      </mat-dialog-actions>
+    </section>
+  </ng-container>
+</main>

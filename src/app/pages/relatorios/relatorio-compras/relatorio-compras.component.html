@@ -1,0 +1,66 @@
+<main fxLayout="column" fxLayoutGap="0.5rem">
+  <mat-accordion multi>
+    <mat-expansion-panel [expanded]="painelOpcoesAberto">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Opções
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <ng-container>
+        <section fxLayout="column" fxLayoutGap="1rem">
+          <section fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="end center">
+            <button mat-raised-button color="primary" (click)="emitirRelatorio()">
+              <mat-icon>picture_as_pdf</mat-icon> Emitir Relatório em PDF
+            </button>
+          </section>
+        </section>
+      </ng-container>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="painelRelatorioAberto">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Relatório de Compras
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <ng-container>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <ng-container matColumnDef="produto">
+            <th mat-header-cell *matHeaderCellDef>Produto</th>
+            <td mat-cell *matCellDef="let produto">{{produto.nome}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="quantidadeAtual">
+            <th mat-header-cell *matHeaderCellDef>Quantidade Atual</th>
+            <td mat-cell *matCellDef="let produto">
+              {{ produto.quantidadeAtual }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="quantidadeMinima">
+            <th mat-header-cell *matHeaderCellDef>Quantidade Mínima</th>
+            <td mat-cell *matCellDef="let produto">
+              {{ produto.quantidadeMinima }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr class="no-data-row" *matNoDataRow>
+            <td colspan="5">Lista de Compras Vazia</td>
+          </tr>
+        </table>
+        <mat-paginator
+          [length]="totalRegistros"
+          [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+          (page)="onPageChange($event)">
+        </mat-paginator>
+      </ng-container>
+    </mat-expansion-panel>
+  </mat-accordion>
+</main>

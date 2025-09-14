@@ -1,11 +1,11 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
-import {PaginaInicialComponent} from "./pagina-inicial.component";
+import {MovimentacoesComponent} from "./movimentacoes.component";
 
 const routes: Routes = [
   {
     path: '',
-    component: PaginaInicialComponent
+    component: MovimentacoesComponent
   }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PaginaInicialRoutingModule {}
+export class MovimentacoesRoutingModule {}

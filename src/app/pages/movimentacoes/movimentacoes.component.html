@@ -1,0 +1,171 @@
+<main fxLayout="column" fxLayoutGap="0.5rem">
+
+  <mat-accordion multi>
+    <mat-expansion-panel [expanded]="painelPesquisaAberto">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Pesquisa de Movimentações
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <ng-container>
+        <section fxLayout="column" fxLayoutGap="1rem">
+          <section fxLayout="row" fxLayoutGap="1rem">
+            <form [formGroup]="formulario" fxFlex fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+              <mat-form-field appearance="outline" fxFlex="50">
+                <mat-label>Produto</mat-label>
+                <input matInput type="text" formControlName="produto" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProdutoMovimentacao">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{ option.nome }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" fxFlex="25">
+                <mat-label>Tipo de Mensagem</mat-label>
+                <mat-select formControlName="tipo">
+                  <mat-option *ngFor="let tipo of tipos" [value]="tipo">
+                    {{ tipo }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" fxFlex="25">
+                <mat-label>Data da movimentação</mat-label>
+                <input matInput
+                       [matDatepicker]="picker"
+                       placeholder="dd/mm/yyyy"
+                       formControlName="data"
+                       [max]="maxDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </form>
+          </section>
+          <section fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="end center">
+            <button mat-raised-button color="primary" (click)="novaMovimentacao()">
+              <mat-icon>add</mat-icon> Nova Movimentação
+            </button>
+            <button mat-raised-button (click)="limpar()">
+              <mat-icon>clear</mat-icon>
+              Limpar
+            </button>
+            <button mat-raised-button color="primary" (click)="consultarMovimentacoes()" [disabled]="formulario.invalid">
+              <mat-icon>search</mat-icon>
+              Pesquisar
+            </button>
+          </section>
+        </section>
+      </ng-container>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="painelMovimentacoesAberto">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Movimentações
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <ng-container>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <ng-container matColumnDef="nomeProduto">
+            <th mat-header-cell *matHeaderCellDef>Nome do Produto</th>
+            <td mat-cell *matCellDef="let movimentacao">{{movimentacao.produto.nome}}</td>
+          </ng-container>
+          <ng-container matColumnDef="tipo">
+            <th mat-header-cell *matHeaderCellDef>Tipo de Movimentação</th>
+            <td mat-cell *matCellDef="let movimentacao">{{movimentacao.tipo}}</td>
+          </ng-container>
+          <ng-container matColumnDef="quantidade">
+            <th mat-header-cell *matHeaderCellDef>Quantidade</th>
+            <td mat-cell *matCellDef="let movimentacao">{{movimentacao.quantidade}}</td>
+          </ng-container>
+          <ng-container matColumnDef="data">
+            <th mat-header-cell *matHeaderCellDef>Data da Movimentação/th>
+            <td mat-cell *matCellDef="let movimentacao">{{movimentacao.dataMovimentacao}}</td>
+          </ng-container>
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let movimentacao">
+              <button mat-button color="primary" (click)="editarMovimentacao(movimentacao)" matTooltip="Editar Movimentação">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-button color="primary" (click)="excluirMovimentacao(movimentacao)" matTooltip="Excluir Movimentação">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr class="no-data-row" *matNoDataRow>
+            <td colspan="5">Nenhuma Movimentação cadastrada.</td>
+          </tr>
+        </table>
+        <mat-paginator
+          [length]="totalRegistros"
+          [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+          (page)="onPageChange($event)">
+        </mat-paginator>
+      </ng-container>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+
+
+  <!--
+  <ng-container *ngIf="(movimentacoes$ | async) as movimentacoes; else nenhumaMovimentacao">
+    <ng-container *ngIf="movimentacoes.length > 0; else nenhumaMovimentacao">
+      <section fxLayout="row" fxLayoutGap="1rem">
+        <button mat-raised-button color="primary" (click)="novaMovimentacao()">
+          <mat-icon>add</mat-icon> Nova Movimentação
+        </button>
+        <table mat-table [dataSource]="movimentacoes$" class="mat-elevation-z8">
+          <ng-container matColumnDef="nomeProduto">
+            <th mat-header-cell *matHeaderCellDef>Nome do Produto</th>
+            <td mat-cell *matCellDef="let movimentacao">{{movimentacao.produto.nome}}</td>
+          </ng-container>
+          <ng-container matColumnDef="tipo">
+            <th mat-header-cell *matHeaderCellDef>Tipo de Movimentação</th>
+            <td mat-cell *matCellDef="let movimentacao">{{movimentacao.tipo}}</td>
+          </ng-container>
+          <ng-container matColumnDef="quantidade">
+            <th mat-header-cell *matHeaderCellDef>Quantidade</th>
+            <td mat-cell *matCellDef="let movimentacao">{{movimentacao.quantidade}}</td>
+          </ng-container>
+          <ng-container matColumnDef="data">
+            <th mat-header-cell *matHeaderCellDef>Data da Movimentação/th>
+            <td mat-cell *matCellDef="let movimentacao">{{movimentacao.dataMovimentacao}}</td>
+          </ng-container>
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let movimentacao">
+              <button mat-button color="primary" (click)="editarMovimentacao(movimentacao)">Editar</button>
+              <button mat-button color="warn" (click)="excluirMovimentacao(movimentacao)">Excluir</button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        </table>
+      </section>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #nenhumaMovimentacao>
+    <section fxLayout="row" fxLayoutAlign="center center">
+      <section fxLayout="column" fxLayoutGap="1rem" fxFlex.gt-md="30">
+        <button mat-raised-button color="primary" (click)="novaMovimentacao()">
+          <mat-icon>add</mat-icon> Nova Movimentação
+        </button>
+        <h2>Nenhuma Movimentação cadastrada.</h2>
+      </section>
+    </section>
+  </ng-template>
+
+
+-->
+</main>

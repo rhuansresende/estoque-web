@@ -1,0 +1,115 @@
+<main fxLayout="column" fxLayoutGap="0.5rem">
+  <mat-accordion multi>
+    <mat-expansion-panel [expanded]="painelPesquisaAberto">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Pesquisa de Mensagens
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <ng-container>
+        <section fxLayout="column" fxLayoutGap="1rem">
+          <section fxLayout="row" fxLayoutGap="1rem">
+            <form [formGroup]="formulario" fxFlex fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+              <mat-form-field appearance="outline" fxFlex="50">
+                <mat-label>Título</mat-label>
+                <input matInput formControlName="titulo">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" fxFlex="25">
+                <mat-label>Tipo de Mensagem</mat-label>
+                <mat-select formControlName="tipoMensagem">
+                  <mat-option *ngFor="let tipo of tiposMensagem" [value]="tipo.codigo">
+                    {{ tipo.descricao }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" fxFlex="25">
+                <mat-label>Data de criação</mat-label>
+                <input matInput
+                       [matDatepicker]="picker"
+                       placeholder="dd/mm/yyyy"
+                       formControlName="dataCriacao"
+                       [max]="maxDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </form>
+          </section>
+          <section fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="end center">
+            <button mat-raised-button (click)="limpar()">
+              <mat-icon>clear</mat-icon>
+              Limpar
+            </button>
+            <button mat-raised-button color="primary" (click)="getMensagens()" [disabled]="formulario.invalid">
+              <mat-icon>search</mat-icon>
+              Pesquisar
+            </button>
+          </section>
+        </section>
+      </ng-container>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="painelMensagensAberto">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Mensagens
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <ng-container>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <ng-container matColumnDef="titulo">
+            <th mat-header-cell *matHeaderCellDef>Título</th>
+            <td mat-cell *matCellDef="let mensagem">{{mensagem.titulo}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="mensagem">
+            <th mat-header-cell *matHeaderCellDef>Mensagem</th>
+            <td mat-cell *matCellDef="let mensagem">{{mensagem.mensagem}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="tipo">
+            <th mat-header-cell *matHeaderCellDef>Tipo</th>
+            <td mat-cell *matCellDef="let mensagem"
+                [ngClass]="{'critico': mensagem.tipoMensagem === 'CRITICA',
+              'alerta': mensagem.tipoMensagem === 'ALERTA',
+              'informacao': mensagem.tipoMensagem === 'INFORMACAO'}">{{mensagem.tipoMensagem}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="dataCriacao">
+            <th mat-header-cell *matHeaderCellDef>Data de Crição</th>
+            <td mat-cell *matCellDef="let mensagem">{{mensagem.dataCriacao}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let mensagem">
+              <button mat-button color="primary" (click)="lerMensagem(mensagem)" matTooltip="Marcar como lida">
+                <mat-icon>done</mat-icon>
+              </button>
+              <button mat-button color="primary" (click)="excluirMensagem(mensagem)" matTooltip="Excluir mensagem">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr class="no-data-row" *matNoDataRow>
+            <td colspan="5">Tudo certo por aqui. Nenhuma mensagem encontrada!</td>
+          </tr>
+        </table>
+        <mat-paginator
+          [length]="totalRegistros"
+          [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+          (page)="onPageChange($event)">
+        </mat-paginator>
+      </ng-container>
+    </mat-expansion-panel>
+  </mat-accordion>
+</main>

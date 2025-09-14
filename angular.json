@@ -17,7 +17,7 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": ["src/assets/favicon.jpg", "src/assets"],
             "styles": ["src/styles.scss"],
             "scripts": []
           },
@@ -82,7 +82,7 @@
             },
             "development": {
               "buildTarget": "estoque-web:build:development",
-              "ssl": true
+              "ssl": false
             }
           }
         },
@@ -99,8 +99,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.css"],
+            "assets": ["src/assets/favicon.jpg", "src/assets"],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         },
@@ -114,7 +114,34 @@
       }
     }
   },
-  "defaultProject": "estoque-web",
+  "schematics": {
+    "@schematics/angular:class": {
+      "skipTests": true
+    },
+    "@schematics/angular:component": {
+      "skipTests": true,
+      "inlineStyle": false,
+      "inlineTemplate": false,
+      "prefix": "estoque",
+      "style": "scss"
+    },
+    "@schematics/angular:directive": {
+      "skipTests": true,
+      "prefix": "estoque"
+    },
+    "@schematics/angular:guard": {
+      "skipTests": true
+    },
+    "@schematics/angular:module": {
+      "skipTests": true
+    },
+    "@schematics/angular:pipe": {
+      "skipTests": true
+    },
+    "@schematics/angular:service": {
+      "skipTests": true
+    }
+  },
   "cli": {
     "analytics": "0f99bac6-edb3-468d-a605-fcb2ea139971"
   }

@@ -1,0 +1,62 @@
+// Container principal com fundo
+.mat-sidenav-container {
+  min-height: 100vh;
+  background-image: url('../assets/background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+
+  // Scroll do conteúdo
+  .mat-sidenav-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    // Botão de menu
+    .menu-button {
+      margin-bottom: 1rem;
+    }
+
+    // Conteúdo branco flutuante
+    .router-outlet-wrapper {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      //background-color: rgba(255, 255, 255, 0.75);
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      overflow: auto;
+    }
+  }
+
+  // Menu lateral
+  .mat-sidenav {
+    background-color: #ffffff;
+    width: 250px;
+
+    mat-nav-list {
+      padding: 0;
+
+      a.mat-list-item {
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+      }
+    }
+
+    mat-expansion-panel {
+      &.mat-expanded {
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+.menu-button {
+  color: #ffffff; // deixa o ícone branco
+}
