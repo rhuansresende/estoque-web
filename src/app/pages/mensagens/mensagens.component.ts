@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {MensagemModel} from '../../model/mensagem.model';
 import {TipoMensagemModel} from '../../model/tipo-mensagem.model';
 import {MensagemService} from '../../services/mensagem.service';
@@ -45,6 +45,7 @@ export class MensagensComponent implements AfterViewInit {
 
   constructor(
     private _fb: FormBuilder,
+    private _cd: ChangeDetectorRef,
     private service: MensagemService,
     private snackbarService: SnackbarService,
     private dialog: MatDialog
@@ -57,7 +58,6 @@ export class MensagensComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
     this.getTipoMensagens();
     this.getMensagens();
   }
@@ -79,6 +79,21 @@ export class MensagensComponent implements AfterViewInit {
       next: (page) => {
         this.dataSource.data = page.content;
         this.totalRegistros = page.totalElements;
+        this.pageIndex = page.number;
+        this.pageSize = page.size;
+
+        // vincula paginator somente quando o dataSource já tem dados
+        if (!this.dataSource.paginator) {
+          this.dataSource.paginator = this.paginator;
+        }
+
+        // força atualização de labels e botões
+        setTimeout(() => {
+          this.paginator.pageIndex = this.pageIndex;
+          this.paginator.length = this.totalRegistros;
+          this.paginator.pageSize = this.pageSize;
+          this.paginator._intl.changes.next();
+        });
       },
       error: (err) => this.snackbarService.show(err.error.message)
     })

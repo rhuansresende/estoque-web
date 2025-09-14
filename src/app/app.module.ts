@@ -11,6 +11,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {DatePipe, registerLocaleData} from "@angular/common";
 import localePt from '@angular/common/locales/pt';
 import {MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
+import { MatPaginatorIntl } from "@angular/material/paginator";
+import { CustomPaginatorIntl } from "./components/paginator/CustomPaginatorIntl";
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -56,6 +58,10 @@ export const MY_DATE_FORMATS = {
     {
       provide: 'ENVIRONMENT',
       useValue: environment
+    },
+    {
+      provide: MatPaginatorIntl,
+      useClass: CustomPaginatorIntl
     },
     DatePipe
   ],

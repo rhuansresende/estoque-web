@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {catchError, Observable, of} from "rxjs";
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {ProdutoService} from "../../services/produto.service";
 import {SnackbarService} from "../../services/snackbar.service";
 import {
@@ -7,6 +6,10 @@ import {
 } from "../../components/dialogs/produto-form-dialog-component/produto-form-dialog.component";
 import {MatDialog} from '@angular/material/dialog';
 import {ProdutoModel} from '../../model/produto.model';
+import {MatTableDataSource} from "@angular/material/table";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {SituacaoModel} from "../../model/situacao.model";
 
 @Component({
   selector: 'app-produtos',
@@ -14,9 +17,12 @@ import {ProdutoModel} from '../../model/produto.model';
   standalone: false,
   styleUrl: './produtos.component.scss'
 })
-export class ProdutosComponent implements OnInit {
+export class ProdutosComponent implements AfterViewInit {
 
-  produtos$: Observable<ProdutoModel[]> = of([]);
+  formulario: FormGroup;
+  situacoes = Array<SituacaoModel>();
+  painelPesquisaAberto: boolean = true;
+  painelProdutosAberto: boolean = true;
 
   displayedColumns: string[] = [
     'nome',
@@ -25,25 +31,71 @@ export class ProdutosComponent implements OnInit {
     'acoes'
   ];
 
+  dataSource = new MatTableDataSource<ProdutoModel>([]);
+
+  totalRegistros = 0;
+  pageSize = 5;
+  pageIndex = 0;
+
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
+
   constructor(
+    private _fb: FormBuilder,
     private service: ProdutoService,
     private dialog: MatDialog,
     private snackbarService: SnackbarService
-  ) {}
+  ) {
+    this.formulario = this._fb.group({
+      nome: this._fb.control(null),
+      situacao: this._fb.control('ATIVO')
+    });
+  }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    // this.dataSource.paginator = this.paginator;
+    this.getSituacoesProduto();
     this.getProdutos();
   }
 
-  getProdutos() {
-    this.produtos$ = this.service.getProdutos()
-      .pipe(
-        catchError(err => {
-          console.log(err);
-          return of([]);
-        })
-      );
+  getSituacoesProduto() {
+    this.service.consultarSituacoesProduto().subscribe({
+      next: (res) => this.situacoes = res,
+      error: (err) => this.snackbarService.show(err.error.message)
+    });
   }
+
+  getProdutos() {
+    this.service.getProdutos(
+      this.pageIndex,
+      this.pageSize,
+      this.formulario.get('nome')?.value,
+      this.formulario.get('situacao')?.value
+    ).subscribe({
+      next: (page) => {
+        this.dataSource.data = page.content;
+
+        this.totalRegistros = page.totalElements;
+        this.pageIndex = page.number;
+        this.pageSize = page.size;
+
+        // vincula paginator somente quando o dataSource já tem dados
+        if (!this.dataSource.paginator) {
+          this.dataSource.paginator = this.paginator;
+        }
+
+        // força atualização de labels e botões
+        setTimeout(() => {
+          this.paginator.pageIndex = this.pageIndex;
+          this.paginator.length = this.totalRegistros;
+          this.paginator.pageSize = this.pageSize;
+          this.paginator._intl.changes.next();
+        });
+      },
+      error: (err) => this.snackbarService.show(err.error.message)
+    });
+  }
+
 
   novoProduto(produto?: ProdutoModel) {
     const dialogRef = this.dialog.open(ProdutoFormDialogComponent, {
@@ -84,5 +136,29 @@ export class ProdutosComponent implements OnInit {
         this.getProdutos()
       },
       (err) => this.snackbarService.show(err.error.message, 'error'));
+  }
+
+  ativarProduto(produto: ProdutoModel) {
+    this.service.ativarProduto(produto.id!).subscribe({
+      next: () => {
+        this.snackbarService.show("Produto Ativado com sucesso!", 'success');
+        this.getProdutos()
+      },
+      error: (err) => this.snackbarService.show(err.error.message)
+    });
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getProdutos();
+  }
+
+  limpar() {
+    this.formulario.reset({
+      nome: null,
+      situacao: 'ATIVO'
+    });
+    this.getProdutos();
   }
 }
