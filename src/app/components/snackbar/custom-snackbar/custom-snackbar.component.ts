@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from "@angular/material/snack-bar";
 
-export type SnackType = 'success' | 'error' | 'warning';
+export type SnackType = 'success' | 'error' | 'warning' | 'info';
 
 @Component({
   selector: 'estoque-custom-snackbar',
