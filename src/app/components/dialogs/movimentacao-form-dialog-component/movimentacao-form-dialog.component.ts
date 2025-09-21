@@ -36,16 +36,16 @@ export class MovimentacaoFormDialogComponent implements OnInit {
       produto: this._fb.control(data?.movimentacao.produto?.nome || '', [Validators.required]),
       tipo: this._fb.control(data?.movimentacao.tipo || '', [Validators.required]),
       quantidade: this._fb.control(data?.movimentacao.quantidade || '', [Validators.required]),
-      precoCompra: this._fb.control(data?.movimentacao.precoCompra || ''),
+      precoCompra: this._fb.control(data?.movimentacao.produto?.precoCompra || ''),
       justificativa: this._fb.control(data?.movimentacao.justificativa || '')
     });
   }
 
   ngOnInit() {
     const produtoControl = this.formulario.get('produto') as FormControl;
-    if (this.data?.produto) {
-      this.produtoService.buscarProdutos(this.data.produto.nome).subscribe(produtos => {
-        const produtoSelecionado = produtos.find(p => p.id === this.data?.produto.id);
+    if (this.data?.movimentacao.produto) {
+      this.produtoService.buscarProdutos(this.data.movimentacao.produto.nome).subscribe(produtos => {
+        const produtoSelecionado = produtos.find(p => p.id === this.data?.movimentacao.produto.id);
         if (produtoSelecionado) {
           produtoControl.patchValue(produtoSelecionado);
         }
