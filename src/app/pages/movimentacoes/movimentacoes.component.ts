@@ -124,11 +124,16 @@ export class MovimentacoesComponent implements AfterViewInit {
   }
 
   editarMovimentacao(movimentacao: MovimentacaoModel) {
+    const dados = {
+      movimentacao,
+      delete: false
+    }
+
     const dialogRef = this.dialog.open(MovimentacaoFormDialogComponent, {
       width: '90%',
       maxWidth: '600px',
       minWidth: '300px',
-      data: movimentacao
+      data: dados
     });
 
     dialogRef.afterClosed().subscribe(result => {
