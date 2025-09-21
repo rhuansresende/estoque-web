@@ -2,17 +2,17 @@
   <mat-sidenav #sidenav mode="over" [opened]>
     <!-- Menu lateral -->
     <mat-nav-list>
-      <a mat-list-item [routerLink]="['./pages/mensagens']" routerLinkActive="active">
+      <a mat-list-item [routerLink]="['./pages/mensagens']" routerLinkActive="active" (click)="sidenav.close()">
         <mat-icon matListIcon>chat</mat-icon>
         <span matLine>Mensagens</span>
       </a>
 
-      <a mat-list-item [routerLink]="['./pages/produtos']" routerLinkActive="active">
+      <a mat-list-item [routerLink]="['./pages/produtos']" routerLinkActive="active" (click)="sidenav.close()">
         <mat-icon matListIcon>inventory_2</mat-icon>
         <span matLine>Produtos</span>
       </a>
 
-      <a mat-list-item [routerLink]="['./pages/movimentacoes']" routerLinkActive="active">
+      <a mat-list-item [routerLink]="['./pages/movimentacoes']" routerLinkActive="active" (click)="sidenav.close()">
         <mat-icon matListIcon>swap_horiz</mat-icon>
         <span matLine>Movimentações</span>
       </a>
@@ -27,12 +27,12 @@
         </mat-expansion-panel-header>
 
         <mat-nav-list>
-          <a mat-list-item [routerLink]="['./pages/relatorios/precos']" routerLinkActive="active">
+          <a mat-list-item [routerLink]="['./pages/relatorios/precos']" routerLinkActive="active" (click)="sidenav.close()">
             <mat-icon matListIcon>sell</mat-icon>
             <span matLine>Preços</span>
           </a>
 
-          <a mat-list-item [routerLink]="['./pages/relatorios/compras']" routerLinkActive="active">
+          <a mat-list-item [routerLink]="['./pages/relatorios/compras']" routerLinkActive="active" (click)="sidenav.close()">
             <mat-icon matListIcon>shopping_cart</mat-icon>
             <span matLine>Compras</span>
           </a>
