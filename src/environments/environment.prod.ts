@@ -5,5 +5,5 @@ export const environment: Environment = {
   appName: 'ESTOQUE-WEB',
   envName: 'PROD',
   test: false,
-  BASE_URL: 'http://backend.estoque.com.br:8000'
+  BASE_URL: '/api'
 }

@@ -8,10 +8,12 @@ import { CustomSnackbarComponent, SnackType } from "../components/snackbar/custo
 export class SnackbarService {
 
   constructor(
-    private snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar
   ) {}
 
-  show(message: string, type: SnackType = 'error', duration: number = 5000) {
+  show(message: string = 'Sistema temporariamente indisponivel. Favor tente novamente!',
+       type: SnackType = 'error',
+       duration: number = 5000) {
     this.snackBar.openFromComponent(CustomSnackbarComponent, {
       data: { message, type },
       duration,

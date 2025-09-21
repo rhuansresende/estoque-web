@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {catchError, debounceTime, distinctUntilChanged, Observable, of, switchMap} from "rxjs";
 import {MovimentacaoService} from '../../services/movimentacao.service';
 import {SnackbarService} from '../../services/snackbar.service';
@@ -7,12 +7,12 @@ import {MovimentacaoModel} from '../../model/movimentacao.model';
 import {
   MovimentacaoFormDialogComponent
 } from '../../components/dialogs/movimentacao-form-dialog-component/movimentacao-form-dialog.component';
-import {FormBuilder, FormControl, FormGroup } from "@angular/forms";
-import {MensagemModel} from '../../model/mensagem.model';
-import { MatTableDataSource } from "@angular/material/table";
-import { MatPaginator, PageEvent } from "@angular/material/paginator";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {ProdutoModel} from '../../model/produto.model';
-import { ProdutoService } from "../../services/produto.service";
+import {ProdutoService} from "../../services/produto.service";
+import moment from 'moment';
 
 @Component({
   selector: 'app-movimentacoes',
@@ -60,7 +60,7 @@ export class MovimentacoesComponent implements AfterViewInit {
     this.formulario = this._fb.group({
       produto: this._fb.control(null),
       tipo: this._fb.control(null),
-      data: this._fb.control(new Date())
+      data: this._fb.control(moment().toDate())
     });
   }
 
@@ -93,9 +93,7 @@ export class MovimentacoesComponent implements AfterViewInit {
         this.pageSize = page.size;
 
         // vincula paginator somente quando o dataSource já tem dados
-        if (!this.dataSource.paginator) {
-          this.dataSource.paginator = this.paginator;
-        }
+        this.dataSource.paginator ??= this.paginator;
 
         // força atualização de labels e botões
         setTimeout(() => {
@@ -126,11 +124,16 @@ export class MovimentacoesComponent implements AfterViewInit {
   }
 
   editarMovimentacao(movimentacao: MovimentacaoModel) {
+    const dados = {
+      movimentacao,
+      delete: false
+    }
+
     const dialogRef = this.dialog.open(MovimentacaoFormDialogComponent, {
       width: '90%',
       maxWidth: '600px',
       minWidth: '300px',
-      data: movimentacao
+      data: dados
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -176,7 +179,7 @@ export class MovimentacoesComponent implements AfterViewInit {
     this.formulario.reset({
       produto: null,
       tipo: null,
-      data: new Date()
+      data: moment().toDate()
     });
     this.consultarMovimentacoes();
   }

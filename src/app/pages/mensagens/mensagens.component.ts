@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, NgZone, ViewChild} from '@angular/core';
 import {MensagemModel} from '../../model/mensagem.model';
 import {TipoMensagemModel} from '../../model/tipo-mensagem.model';
 import {MensagemService} from '../../services/mensagem.service';
@@ -40,6 +40,9 @@ export class MensagensComponent implements AfterViewInit {
   pageSize = 5;
   pageIndex = 0;
 
+  private idleTimeoutId: any;
+  private readonly idleTime = 10 * 60 * 1000;
+
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
 
@@ -47,13 +50,17 @@ export class MensagensComponent implements AfterViewInit {
     private _fb: FormBuilder,
     private service: MensagemService,
     private snackbarService: SnackbarService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private ngZone: NgZone
   ) {
     this.formulario = this._fb.group({
       titulo: this._fb.control(null),
       tipoMensagem: this._fb.control(null),
       dataCriacao: this._fb.control(new Date())
     });
+
+    this.setupIdleRefresh();
+    this.setupVisibilityRefresh();
   }
 
   ngAfterViewInit() {
@@ -121,6 +128,32 @@ export class MensagensComponent implements AfterViewInit {
         this.getMensagens();
       },
       error: (err) => this.snackbarService.show(err.error.message)
+    });
+  }
+
+  private setupIdleRefresh() {
+    this.resetIdleTimer();
+    window.addEventListener('mousemove', () => this.resetIdleTimer());
+    window.addEventListener('keydown', () => this.resetIdleTimer());
+    window.addEventListener('click', () => this.resetIdleTimer());
+  }
+
+  private resetIdleTimer() {
+    clearTimeout(this.idleTimeoutId);
+    this.idleTimeoutId = setTimeout(() => {
+      this.ngZone.run(() => {
+        this.getMensagens();
+        this.snackbarService.show('Mensagens atualizadas automaticamente.', 'info');
+      });
+    }, this.idleTime);
+  }
+
+  private setupVisibilityRefresh() {
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        this.getMensagens();
+      this.snackbarService.show('Mensagens atualizadas automaticamente.', 'info');
+      }
     });
   }
 
